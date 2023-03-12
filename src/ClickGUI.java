@@ -105,7 +105,11 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
             FileWriter writer = new FileWriter("Bot.java", true);
             writer.write("bot.mouseMove("+ clickPoint.x + "," + clickPoint.y +");\r\n"
             		+ "bot.mousePress(KeyEvent.BUTTON1_DOWN_MASK);\r\n"
-            		+ "bot.mouseRelease(KeyEvent.BUTTON1_DOWN_MASK);\r\n");
+            		+ "bot.mouseRelease(KeyEvent.BUTTON1_DOWN_MASK);\r\n"
+            		+ "try {\r\n"
+            		+ "    Thread.sleep(10000); \r\n"
+            		+ "} catch (InterruptedException e) {\r\n"
+            		+ "}");
             writer.close();
             System.out.println("Coordenadas e teclas salvas em Bot.java");
         } catch (IOException ex) {
@@ -136,12 +140,15 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
         lastPressedKey = e.getKeyCode();
         // Salva as coordenadas do clique e a tecla pressionada em um arquivo de texto
         try {
+        	String Key = NativeKeyEvent.getKeyText(lastPressedKey);
+        	//Correção de comandos para o bot
+        	if (Key == "Enter") {Key = "ENTER";}else if(Key == "Espaço") {Key = "SPACE";}else if(Key == "Backspace") {Key = "BACK_SPACE";}else if(Key == "Guia") {Key = "TAB";} else if(Key == "Caps Lock") {Key = "CAPS_LOCK";}else if(Key == "Escape") {Key = "ESCAPE";}else if (Key == "Ctrl") {Key = "CONTROL";}else if(Key == "Alt") {Key = "ALT";}else if(Key == "Shift") {Key = "SHIFT";}
             FileWriter writer = new FileWriter("Bot.java", true);
-            writer.write("bot.keyPress(KeyEvent.VK_" + NativeKeyEvent.getKeyText(lastPressedKey) + ");\n"
-            		+ "bot.keyRelease(KeyEvent.VK_"+  NativeKeyEvent.getKeyText(lastPressedKey) + ");\n");
+            writer.write("bot.keyPress(KeyEvent.VK_" + Key + ");\n"
+            		+ "bot.keyRelease(KeyEvent.VK_"+  Key + ");\n");
             infoLabel.setText("Adicionado: "+ NativeKeyEvent.getKeyText(lastPressedKey));
             writer.close();
-            System.out.println("Tecla pressionada salva em Bot.java");
+            System.out.println("Tecla pressionada salva em Bot.java" + NativeKeyEvent.getKeyText(lastPressedKey));
         } catch (IOException ex) {
             System.err.println("Erro ao salvar a tecla pressionada: " + ex.getMessage());
         }
