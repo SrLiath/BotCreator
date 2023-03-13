@@ -107,7 +107,7 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
             		+ "bot.mousePress(KeyEvent.BUTTON1_DOWN_MASK);\r\n"
             		+ "bot.mouseRelease(KeyEvent.BUTTON1_DOWN_MASK);\r\n"
             		+ "try {\r\n"
-            		+ "    Thread.sleep(10000); \r\n"
+            		+ "    Thread.sleep(3000); \r\n"
             		+ "} catch (InterruptedException e) {\r\n"
             		+ "}");
             writer.close();
