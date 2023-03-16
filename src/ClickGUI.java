@@ -105,7 +105,13 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
         // Salva as coordenadas do clique e as teclas pressionadas em um arquivo de texto
         try {
             FileWriter writer = new FileWriter("Bot.java", true);
-            writer.write("clicou com o botão esquerdo");
+            writer.write("bot.mouseMove("+ clickPoint.x + "," + clickPoint.y +");\r\n"
+            		+ "bot.mousePress(KeyEvent.BUTTON1_DOWN_MASK);\r\n"
+            		+ "bot.mouseRelease(KeyEvent.BUTTON1_DOWN_MASK);\r\n"
+            		+ "try {\r\n"
+            		+ "    Thread.sleep(3000); \r\n"
+            		+ "} catch (InterruptedException e) {\r\n"
+            		+ "}");
             writer.close();
             System.out.println("Coordenadas e teclas salvas em Bot.java");
         } catch (IOException ex) {

@@ -64,13 +64,13 @@ public class Shortcut implements NativeKeyListener {
         GlobalScreen.addNativeKeyListener(listener);
 
         // teste
-        JFrame frame = new JFrame("Bot");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("O programa está rodando. Pressione CTRL + ALT + B para executar o bot.");
-        panel.add(label);
-        frame.getContentPane().add(panel);
-        frame.pack();
-        frame.setVisible(true);
+        //JFrame frame = new JFrame("Bot");
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //JPanel panel = new JPanel();
+        //JLabel label = new JLabel("O programa está rodando. Pressione CTRL + ALT + B para executar o bot.");
+        //panel.add(label);
+        //frame.getContentPane().add(panel);
+        //frame.pack();
+        //frame.setVisible(true);
     }
 }

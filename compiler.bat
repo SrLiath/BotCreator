@@ -18,7 +18,7 @@ set "count=0"
     if !count! leq !stopline! echo %%a
 )) > "%tempfile%"
 
-:: adicionar "}}" ao final do arquivo temporário
+:: adicionar "}}" ao final do arquivo temporário para finalizar o bot
 echo.>> "%tempfile%"
 echo ^}^}>> "%tempfile%"
 
@@ -28,13 +28,13 @@ move /y "%tempfile%" "%file%" > nul
 set "MAIN_CLASS=Bot"
 set "JAR_FILE=Bot.jar"
 
-rem Compile todos os arquivos .java no diretório atual
+::Compile todos os arquivos .java no diretório atual
 javac *.java
 
-rem Crie um arquivo Manifest que especifica a classe principal
+::Cria um arquivo Manifest que especifica a classe principal
 echo Main-Class: %MAIN_CLASS% > MANIFEST.MF
 
-rem Crie o arquivo JAR
+::Cria o arquivo JAR
 jar cvmf MANIFEST.MF %JAR_FILE% *.class
 
 :: remover o .java
