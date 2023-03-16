@@ -45,12 +45,14 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
             public void actionPerformed(ActionEvent e) {
                 try { 
                 	try {
-                	    FileWriter writer = new FileWriter("Bot.java", true);
-                	    writer.write("}} ");
-                	    writer.close();
+                		// Executa o comando "cmd" para iniciar o prompt de comando
+                        Process p = Runtime.getRuntime().exec("compiler.bat");
+
+                        // Aguarda a finalização do processo filho
+                        p.waitFor();
                 	} catch (IOException ex) {
                 	    System.err.println("Erro ao escrever no arquivo Bot.java: " + ex.getMessage());
-                	}
+                	}catch (InterruptedException w) { System.err.println("Erro ao escrever no arquivo Bot.java: ");}
 
                     GlobalScreen.unregisterNativeHook();
                     dispose(); // fecha a janela principal
@@ -103,13 +105,7 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
         // Salva as coordenadas do clique e as teclas pressionadas em um arquivo de texto
         try {
             FileWriter writer = new FileWriter("Bot.java", true);
-            writer.write("bot.mouseMove("+ clickPoint.x + "," + clickPoint.y +");\r\n"
-            		+ "bot.mousePress(KeyEvent.BUTTON1_DOWN_MASK);\r\n"
-            		+ "bot.mouseRelease(KeyEvent.BUTTON1_DOWN_MASK);\r\n"
-            		+ "try {\r\n"
-            		+ "    Thread.sleep(3000); \r\n"
-            		+ "} catch (InterruptedException e) {\r\n"
-            		+ "}");
+            writer.write("clicou com o botão esquerdo");
             writer.close();
             System.out.println("Coordenadas e teclas salvas em Bot.java");
         } catch (IOException ex) {
@@ -130,7 +126,7 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
 	        		+ "public class Bot {\r\n"
 	        		+ "    public static void main(String[] args) throws Exception {\r\n"
 	        		+ "        // cria uma instância de Robot\r\n"
-	        		+ "        Robot bot = new Robot();");
+	        		+ "        Robot bot = new Robot();\n");
 	        writer.close();
 	        System.out.println("Linha adicionada ao arquivo Bot.java");
 	    } catch (IOException ex) {
@@ -143,9 +139,15 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
         	String Key = NativeKeyEvent.getKeyText(lastPressedKey);
         	//Correção de comandos para o bot
         	if (Key == "Enter") {Key = "ENTER";}else if(Key == "Espaço") {Key = "SPACE";}else if(Key == "Backspace") {Key = "BACK_SPACE";}else if(Key == "Guia") {Key = "TAB";} else if(Key == "Caps Lock") {Key = "CAPS_LOCK";}else if(Key == "Escape") {Key = "ESCAPE";}else if (Key == "Ctrl") {Key = "CONTROL";}else if(Key == "Alt") {Key = "ALT";}else if(Key == "Shift") {Key = "SHIFT";}
+        	//else if(Key =="Meta") {Key = "VK_CONTROL | KeyEvent.VK_ESCAPE";}
+        	
             FileWriter writer = new FileWriter("Bot.java", true);
             writer.write("bot.keyPress(KeyEvent.VK_" + Key + ");\n"
-            		+ "bot.keyRelease(KeyEvent.VK_"+  Key + ");\n");
+            		+ "bot.keyRelease(KeyEvent.VK_"+  Key + ");\n"
+            		+ "try {\r\n"
+            		+ "    Thread.sleep(100); \r\n"
+            		+ "} catch (InterruptedException e) {\r\n"
+            		+ "}\n");
             infoLabel.setText("Adicionado: "+ NativeKeyEvent.getKeyText(lastPressedKey));
             writer.close();
             System.out.println("Tecla pressionada salva em Bot.java" + NativeKeyEvent.getKeyText(lastPressedKey));
