@@ -102,12 +102,21 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
     		} catch (IOException ex) {
     			System.err.println("Erro ao adicionar linha ao arquivo Bot.java: " + ex.getMessage());
 	    }}
+    	
+    	String button = "";
+    	
+    	if(e.getButton() == 1) button = "Botão Esquerdo";
+    	else if(e.getButton() == 2) button = "Botão Direito";
+    	
+    	
+    	
+    	
 
         // Armazena as coordenadas do clique do mouse do usuário
         clickPoint = e.getPoint();
         // Define a mensagem de informação para exibir as coordenadas do clique
         
-        infoLabel.setText("Adicionado (" + clickPoint.x + ", " + clickPoint.y + ")");
+        infoLabel.setText("Adicionado " + button + " (" + clickPoint.x + ", " + clickPoint.y + ")");
         
         // Salva as coordenadas do clique e as teclas pressionadas em um arquivo de texto
         try {
@@ -147,19 +156,24 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
         // Salva as coordenadas do clique e a tecla pressionada em um arquivo de texto
         try {
         	String Key = NativeKeyEvent.getKeyText(lastPressedKey);
+        	
+        	System.out.println(Key);
         	//Correção de comandos para o bot
-        	if (Key == "Enter"){Key = "ENTER";}
-        	else if(Key == "Space") {Key = "SPACE";}
-        	else if(Key == "Backspace"){Key = "BACK_SPACE";}
-        	else if(Key == "Guia"){Key = "TAB";} 
-        	else if(Key == "Caps Lock"){Key = "CAPS_LOCK";}
-        	else if(Key == "Escape"){Key = "ESCAPE";}
-        	else if(Key == "Ctrl"){Key = "CONTROL";}
-        	else if(Key == "Alt"){Key = "ALT";}
-        	else if(Key == "Shift"){Key = "SHIFT";}
-        	else if(Key == "Tab"){Key = "TAB";}
+        	if (Key == "Enter") Key = "ENTER";
+        	else if(Key == "Space") Key = "SPACE";
+        	else if(Key == "Backspace") Key = "BACK_SPACE";
+        	else if(Key == "Guia") Key = "TAB";
+        	else if(Key == "Caps Lock") Key = "CAPS_LOCK";
+        	else if(Key == "Escape") Key = "ESCAPE";
+        	else if(Key == "Ctrl") Key = "CONTROL";
+        	else if(Key == "Alt") Key = "ALT";
+        	else if(Key == "Shift") Key = "SHIFT";
+        	else if(Key == "Tab") Key = "TAB";
+        	else if(Key == "Period") Key = "PERIOD";
+        	else if(Key == "Back Quote") Key = "BACK_QUOTE";
         	//else if(Key =="Meta") {Key = "VK_CONTROL | KeyEvent.VK_ESCAPE";}
         	
+        	System.out.println(Key);
             FileWriter writer = new FileWriter("Bot.java", true);
             writer.write("bot.keyPress(KeyEvent.VK_" + Key + ");\n"
             		+ "bot.keyRelease(KeyEvent.VK_"+  Key + ");\n");
@@ -175,6 +189,7 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
     public void nativeMousePressed(NativeMouseEvent e) {
         // Armazena as coordenadas do clique do mouse do usuário
         clickPoint = e.getPoint();
+       
         // Define a mensagem de informação para exibir as coordenadas do clique
         infoLabel.setText("Adicionado (" + clickPoint.x + ", " + clickPoint.y + ")");
     }
