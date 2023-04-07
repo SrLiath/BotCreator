@@ -8,7 +8,7 @@ set "lines=0"
 for /f %%a in ('type "%file%" ^| find /v /c ""') do set /a lines=%%a
 
 :: calcular a linha em que deve parar de ler o arquivo
-set /a stopline=lines-8
+set /a stopline=lines-3
 
 :: ler as linhas do arquivo e escrevê-las em um novo arquivo temporário
 set "tempfile=%temp%\tempfile.txt"
@@ -39,3 +39,11 @@ jar cvmf MANIFEST.MF %JAR_FILE% *.class
 
 :: remover o .java
 :: del *.java
+
+::mover os bot .jar para pasta bot
+if EXIST ".\bot" (
+	move .\Bot.jar .\bot 
+) ELSE (
+	mkdir bot
+	move .\Bot.jar .\bot
+)

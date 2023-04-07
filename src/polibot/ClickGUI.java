@@ -1,3 +1,4 @@
+package polibot;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -19,30 +20,38 @@ import com.github.kwhat.jnativehook.mouse.NativeMouseListener;
 public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyListener {
     private static final long serialVersionUID = 1L;
     private JFrame frame;
-    private JLabel infoLabel;
+    private JLabel infoLabel, infoUsuario;
     private Point clickPoint;
     private JButton stopButton;
     private JButton startButton;
     private int lastPressedKey;
+    private Usuario nome;
 
     public ClickGUI() {
+    	nome = new Usuario();
+    	//pegando o usuario logado no computador pela variavel de ambiente
+    	nome.setUsuario(System.getenv("USERNAME"));
+    	
     	frame = new JFrame("Click GUI");
     	stopButton = new JButton("Stop");
     	infoLabel = new JLabel("Clique em Start para iniciar");
+    	infoUsuario = new JLabel("OlÃ¡ " + nome.getNome());
     	startButton = new JButton("Start");
         ClickGUI thisNovo = this;
     	
-    	frame.setSize(400, 150);
+    	frame.setSize(400, 200);
     	frame.setLayout(null);
     	frame.setAlwaysOnTop(true);
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setVisible(true);
     	
-    	startButton.setBounds(80, 15, 100, 30);
-    	stopButton.setBounds(200, 15, 100, 30);
-    	infoLabel.setBounds(110, 30, 300, 100);
+    	startButton.setBounds(80, 45, 100, 30);
+    	stopButton.setBounds(200, 45, 100, 30);
+    	infoLabel.setBounds(110, 60, 300, 100);
+    	infoUsuario.setBounds(150, 15, 300, 25);
     	
     	frame.add(infoLabel);
+    	frame.add(infoUsuario);
     	frame.add(startButton);
     	frame.add(stopButton);
             
@@ -66,7 +75,7 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
     				// Executa o comando "cmd" para iniciar o prompt de comando
                     Process p = Runtime.getRuntime().exec("compiler.bat");
 
-                    // Aguarda a finalização do processo filho
+                    // Aguarda a finalizaï¿½ï¿½o do processo filho
                     p.waitFor();
                     GlobalScreen.unregisterNativeHook();
                     dispose(); 
@@ -94,9 +103,9 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
 		        		+ "\r\n"
 		        		+ "public class Bot {\r\n"
 		        		+ "    public static void main(String[] args) throws Exception {\r\n"
-		        		+ "        // cria uma instância de Robot\r\n"
+		        		+ "        // cria uma instï¿½ncia de Robot\r\n"
 		        		+ "        Robot bot = new Robot();\n"
-		        		+ "bot.setAutoDelay(300);");
+		        		+ "bot.setAutoDelay(500);");
 		        writer.close();
 		        System.out.println("Linha adicionada ao arquivo Bot.java");
     		} catch (IOException ex) {
@@ -105,16 +114,16 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
     	
     	String button = "";
     	
-    	if(e.getButton() == 1) button = "Botão Esquerdo";
-    	else if(e.getButton() == 2) button = "Botão Direito";
+    	if(e.getButton() == 1) button = "Botao Esquerdo";
+    	else if(e.getButton() == 2) button = "Botao Direito";
     	
     	
     	
     	
 
-        // Armazena as coordenadas do clique do mouse do usuário
+        // Armazena as coordenadas do clique do mouse do usuï¿½rio
         clickPoint = e.getPoint();
-        // Define a mensagem de informação para exibir as coordenadas do clique
+        // Define a mensagem de informaï¿½ï¿½o para exibir as coordenadas do clique
         
         infoLabel.setText("Adicionado " + button + " (" + clickPoint.x + ", " + clickPoint.y + ")");
         
@@ -131,7 +140,6 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
         }
     }
     
-    
     @Override
     public void nativeKeyPressed(NativeKeyEvent e) {
        	File file = new File("Bot.java");
@@ -144,7 +152,7 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
 	        		+ "\r\n"
 	        		+ "public class Bot {\r\n"
 	        		+ "    public static void main(String[] args) throws Exception {\r\n"
-	        		+ "        // cria uma instância de Robot\r\n"
+	        		+ "        // cria uma instï¿½ncia de Robot\r\n"
 	        		+ "        Robot bot = new Robot();\n");
 	        writer.close();
 	        System.out.println("Linha adicionada ao arquivo Bot.java");
@@ -158,7 +166,7 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
         	String Key = NativeKeyEvent.getKeyText(lastPressedKey);
         	
         	System.out.println(Key);
-        	//Correção de comandos para o bot
+        	//Correï¿½ï¿½o de comandos para o bot
         	if (Key == "Enter") Key = "ENTER";
         	else if(Key == "Space") Key = "SPACE";
         	else if(Key == "Backspace") Key = "BACK_SPACE";
@@ -172,14 +180,13 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
         	else if(Key == "Period") Key = "PERIOD";
         	else if(Key == "Back Quote") Key = "BACK_QUOTE";
         	//else if(Key =="Meta") {Key = "VK_CONTROL | KeyEvent.VK_ESCAPE";}
-        	
-        	System.out.println(Key);
             FileWriter writer = new FileWriter("Bot.java", true);
             writer.write("bot.keyPress(KeyEvent.VK_" + Key + ");\n"
             		+ "bot.keyRelease(KeyEvent.VK_"+  Key + ");\n");
             infoLabel.setText("Adicionado: "+ NativeKeyEvent.getKeyText(lastPressedKey));
             writer.close();
             System.out.println("Tecla pressionada salva em Bot.java" + NativeKeyEvent.getKeyText(lastPressedKey));
+            
         } catch (IOException ex) {
             System.err.println("Erro ao salvar a tecla pressionada: " + ex.getMessage());
         }
@@ -187,25 +194,18 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
 
     @Override
     public void nativeMousePressed(NativeMouseEvent e) {
-        // Armazena as coordenadas do clique do mouse do usuário
+        // Armazena as coordenadas do clique do mouse do usuï¿½rio
         clickPoint = e.getPoint();
        
-        // Define a mensagem de informação para exibir as coordenadas do clique
+        // Define a mensagem de informaï¿½ï¿½o para exibir as coordenadas do clique
         infoLabel.setText("Adicionado (" + clickPoint.x + ", " + clickPoint.y + ")");
     }
 
     @Override
     public void nativeMouseReleased(NativeMouseEvent e) {
-        // Define o cursor do mouse padrão
+        // Define o cursor do mouse padrï¿½o
         setCursor(Cursor.getDefaultCursor());
     }
 
-    public static void main(String[] args) {
-        new ClickGUI();
-    }
-
-
-
-	
     
 }
