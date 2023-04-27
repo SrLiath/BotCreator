@@ -26,7 +26,16 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
     private JButton startButton;
     private int lastPressedKey;
     private Usuario nome;
+    
+    
+    private static final int KEY_CTRL = NativeKeyEvent.VC_CONTROL;
+    private static final int KEY_ALT = NativeKeyEvent.VC_ALT;
+    private static final int KEY_B = NativeKeyEvent.VC_B;
 
+    private boolean ctrlPressed = false;
+    private boolean altPressed = false;
+    private boolean bPressed = false;
+    
     public ClickGUI() {
     	nome = new Usuario();
     	//pegando o usuario logado no computador pela variavel de ambiente
@@ -187,6 +196,23 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
             writer.close();
             System.out.println("Tecla pressionada salva em Bot.java" + NativeKeyEvent.getKeyText(lastPressedKey));
             
+            if (e.getKeyCode() == KEY_CTRL) {
+                ctrlPressed = true;
+            } else if (e.getKeyCode() == KEY_ALT) {
+                altPressed = true;
+            } else if (e.getKeyCode() == KEY_B) {
+                bPressed = true;
+            }
+
+            if (ctrlPressed && altPressed && bPressed) {
+                // Execute o arquivo bot.jar
+                try {
+                    Runtime.getRuntime().exec("java -jar Bot.jar");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            
         } catch (IOException ex) {
             System.err.println("Erro ao salvar a tecla pressionada: " + ex.getMessage());
         }
@@ -207,5 +233,35 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
         setCursor(Cursor.getDefaultCursor());
     }
 
+    public void nativeKeyReleased(NativeKeyEvent e) {
+        if (e.getKeyCode() == KEY_CTRL) {
+            ctrlPressed = false;
+        } else if (e.getKeyCode() == KEY_ALT) {
+            altPressed = false;
+        } else if (e.getKeyCode() == KEY_B) {
+            bPressed = false;
+        }
+    }
+
+    public void nativeKeyTyped(NativeKeyEvent e) {
+        // Nada aqui caraio
+    }
+    
+    
+    public static void main(String[] args) {
+        try {
+            GlobalScreen.registerNativeHook();
+        } catch (NativeHookException ex) {
+            ex.printStackTrace();
+        }
+
+        GlobalScreen.setEventDispatcher(new SwingDispatchService());
+
+        ClickGUI listener = new ClickGUI();
+        GlobalScreen.addNativeKeyListener(listener);
+
+    }
+    
+    
     
 }
