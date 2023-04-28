@@ -26,15 +26,7 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
     private JButton startButton;
     private int lastPressedKey;
     private Usuario nome;
-    
-    
-    private static final int KEY_CTRL = NativeKeyEvent.VC_CONTROL;
-    private static final int KEY_ALT = NativeKeyEvent.VC_ALT;
-    private static final int KEY_B = NativeKeyEvent.VC_B;
-
-    private boolean ctrlPressed = false;
-    private boolean altPressed = false;
-    private boolean bPressed = false;
+   
     
     public ClickGUI() {
     	nome = new Usuario();
@@ -44,7 +36,7 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
     	frame = new JFrame("Click GUI");
     	stopButton = new JButton("Stop");
     	infoLabel = new JLabel("Clique em Start para iniciar");
-    	infoUsuario = new JLabel("Olá " + nome.getNome());
+    	infoUsuario = new JLabel("Ola " + nome.getNome());
     	startButton = new JButton("Start");
         ClickGUI thisNovo = this;
     	
@@ -196,23 +188,6 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
             writer.close();
             System.out.println("Tecla pressionada salva em Bot.java" + NativeKeyEvent.getKeyText(lastPressedKey));
             
-            if (e.getKeyCode() == KEY_CTRL) {
-                ctrlPressed = true;
-            } else if (e.getKeyCode() == KEY_ALT) {
-                altPressed = true;
-            } else if (e.getKeyCode() == KEY_B) {
-                bPressed = true;
-            }
-
-            if (ctrlPressed && altPressed && bPressed) {
-                // Execute o arquivo bot.jar
-                try {
-                    Runtime.getRuntime().exec("java -jar Bot.jar");
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            
         } catch (IOException ex) {
             System.err.println("Erro ao salvar a tecla pressionada: " + ex.getMessage());
         }
@@ -232,32 +207,12 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
         // Define o cursor do mouse padr�o
         setCursor(Cursor.getDefaultCursor());
     }
-
-    public void nativeKeyReleased(NativeKeyEvent e) {
-        if (e.getKeyCode() == KEY_CTRL) {
-            ctrlPressed = false;
-        } else if (e.getKeyCode() == KEY_ALT) {
-            altPressed = false;
-        } else if (e.getKeyCode() == KEY_B) {
-            bPressed = false;
-        }
-    }
-
-    public void nativeKeyTyped(NativeKeyEvent e) {
-        // Nada aqui caraio
-    }
-    
     
     public static void main(String[] args) throws IOException, InterruptedException {
     	ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cmd /k \"cd pyconfig/Scripts/ && activate.bat && python.exe ../../src/polibot/Exec.py -b bot\"");
     	pb.inheritIO();
     	Process process = pb.start();
-
-        ClickGUI listener = new ClickGUI();
-        GlobalScreen.addNativeKeyListener(listener);
-
-    }
-    
-    
+        new ClickGUI();
+    }        
     
 }
