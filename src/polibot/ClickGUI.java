@@ -252,13 +252,6 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
     	ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cmd /k \"cd pyconfig/Scripts/ && activate.bat && python.exe ../../src/polibot/Exec.py -b bot\"");
     	pb.inheritIO();
     	Process process = pb.start();
-        try {
-            GlobalScreen.registerNativeHook();
-        } catch (NativeHookException ex) {
-            ex.printStackTrace();
-        }
-
-        GlobalScreen.setEventDispatcher(new SwingDispatchService());
 
         ClickGUI listener = new ClickGUI();
         GlobalScreen.addNativeKeyListener(listener);

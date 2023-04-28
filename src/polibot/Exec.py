@@ -33,7 +33,7 @@ args = parser.parse_args()
 
 # Caminho completo para o arquivo .jar do bot
 BOT_FILE = os.path.join("../../bot/", args.bot + ".jar")
-EXEC = f"java -jar {BOT_FILE}"aadd
+EXEC = f"java -jar {BOT_FILE}"
 
 # Carrega as palavras-chave do arquivo .txt em uma lista
 with open(os.path.join(DIR_TXT, KEYWORDS_FILE), "r") as f:
