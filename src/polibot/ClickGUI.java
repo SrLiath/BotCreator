@@ -248,7 +248,10 @@ public class ClickGUI extends JFrame implements NativeMouseListener, NativeKeyLi
     }
     
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
+    	ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cmd /k \"cd pyconfig/Scripts/ && activate.bat && python.exe ../../src/polibot/Exec.py -b bot\"");
+    	pb.inheritIO();
+    	Process process = pb.start();
         try {
             GlobalScreen.registerNativeHook();
         } catch (NativeHookException ex) {

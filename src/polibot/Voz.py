@@ -1,3 +1,7 @@
+#####################################################################################################################################
+# Para gravar uma mensagem que irá chamar o bot, execute o script como "python Voz.py -c (aqui fica como ficará o arquivo .voice)", #
+# caso você não insira nenhuma flag, naturalmente ira atribuir a flag none                                                          #
+#####################################################################################################################################
 from vosk import Model, KaldiRecognizer
 import os
 import pyaudio
@@ -9,8 +13,8 @@ parser.add_argument("-c", "--config", help="Nome do arquivo de configuração")
 args = parser.parse_args()
 
 # Validacao da pasta de modelo
-# Eh necessario criar a pasta model-br a partir de onde estiver este fonte
-if not os.path.exists("model-br"):
+# a pasta tem todos os arquivos foneticos para ouvir, atribui um modelo simples e com poucas palavras para facil entedimento no github
+if not os.path.exists("../../src/polibot/model-br"):
     print("Modelo em portugues nao encontrado.")
     exit(1)
 
@@ -20,7 +24,7 @@ stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, fram
 stream.start_stream()
 
 # Apontando o algoritmo para ler o modelo treinado na pasta "model-br"
-model = Model("model-br")
+model = Model("../../src/polibot/model-br")
 rec = KaldiRecognizer(model, 16000)
 
 # Variável para armazenar a frase reconhecida

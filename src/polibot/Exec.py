@@ -1,26 +1,20 @@
+#############################################################################################################
+# Para usar o bot, você terá que executar o comando "python Exec.py -b (aqui fica o nome do bot executado)" #
+# o script fica ouvindo o none.voice na pasta vozes, futuramente irei implementar para ouvir todos em vozes #
+#############################################################################################################
 import os
 import subprocess
 import vosk
 import pyaudio
 import threading
 import queue
+import argparse
 
 # Diretório onde os arquivos .txt estão armazenados
-DIR_TXT = "vozes/"
+DIR_TXT = "../../src/polibot/vozes/"
 
 # Nome do arquivo .txt contendo as palavras-chave
-KEYWORDS_FILE = "none.voice"
-
-# Caminho completo para o arquivo .bat a ser executado
-BAT_FILE = "teste.bat"
-
-# Carrega as palavras-chave do arquivo .txt em uma lista
-with open(os.path.join(DIR_TXT, KEYWORDS_FILE), "r") as f:
-    keywords = f.read().splitlines()
-
-# Configuração do modelo de reconhecimento de voz
-model = vosk.Model("model-br")
-rec = vosk.KaldiRecognizer(model, 16000)
+KEYWORDS_FILE = "None.voice"
 
 # Configuração da biblioteca PyAudio para captura de áudio
 FORMAT = pyaudio.paInt16
@@ -31,10 +25,27 @@ BUFFER_SIZE = 8*CHUNK_SIZE
 audio = pyaudio.PyAudio()
 audio_buffer = queue.Queue(maxsize=int(BUFFER_SIZE/CHUNK_SIZE))
 
+# Processa os argumentos passados via linha de comando
+parser = argparse.ArgumentParser(description="Voice control for Java bot")
+parser.add_argument("-b", "--bot", type=str, required=True, help="Name of the bot jar file")
+args = parser.parse_args()
+
+# Caminho completo para o arquivo .jar do bot
+BOT_FILE = os.path.join("../../bot/", args.bot + ".jar")
+EXEC = f"java -jar {BOT_FILE}"
+
+# Carrega as palavras-chave do arquivo .txt em uma lista
+with open(os.path.join(DIR_TXT, KEYWORDS_FILE), "r") as f:
+    keywords = f.read().splitlines()
+
+# Configuração do modelo de reconhecimento de voz
+model = vosk.Model("../../src/polibot/model-br")
+rec = vosk.KaldiRecognizer(model, 16000)
+
 # Função que verifica se a palavra-chave foi encontrada
 def check_keyword(result):
     if any(keyword in result for keyword in keywords):
-        subprocess.call(BAT_FILE, shell=True)
+        subprocess.call(EXEC, shell=True)
         stream.stop_stream()
         stream.close()
         audio.terminate()
