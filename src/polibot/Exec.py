@@ -9,6 +9,7 @@ import pyaudio
 import threading
 import queue
 import argparse
+from multiprocessing import freeze_support
 
 # Diretório onde os arquivos .txt estão armazenados
 DIR_TXT = "../../src/polibot/vozes/"
@@ -32,7 +33,7 @@ args = parser.parse_args()
 
 # Caminho completo para o arquivo .jar do bot
 BOT_FILE = os.path.join("../../bot/", args.bot + ".jar")
-EXEC = f"java -jar {BOT_FILE}"
+EXEC = f"java -jar {BOT_FILE}"aadd
 
 # Carrega as palavras-chave do arquivo .txt em uma lista
 with open(os.path.join(DIR_TXT, KEYWORDS_FILE), "r") as f:
@@ -46,13 +47,6 @@ rec = vosk.KaldiRecognizer(model, 16000)
 def check_keyword(result):
     if any(keyword in result for keyword in keywords):
         subprocess.call(EXEC, shell=True)
-        stream.stop_stream()
-        stream.close()
-        audio.terminate()
-        audio = pyaudio.PyAudio()
-        stream = audio.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK_SIZE)
-        thread_listen = threading.Thread(target=listen)
-        thread_listen.start()
 
 # Função que processa os dados de áudio em paralelo
 def process_audio():
@@ -76,3 +70,9 @@ def listen():
 # Cria e inicia a thread para ouvir o microfone e fazer a captura de áudio
 thread_listen = threading.Thread(target=listen)
 thread_listen.start()
+
+if __name__ == '__main__':
+    freeze_support()
+    # Loop principal para manter o programa ouvindo continuamente sem espaços em branco
+    while True:
+        pass
