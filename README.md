@@ -1,4 +1,4 @@
 # BotCreator
+New Version - https://github.com/SrLiath/Polibot
 ~~~
-Projeto de faculdade para automação de processos, projeto migrado para outra linguagem, repositorio descontinuado
-nova versão não disponivel, em processo de criação
+College project for process automation, project migrated to another language, discontinued repository
